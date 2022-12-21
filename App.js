@@ -9,6 +9,7 @@ import Navbar from './src/components/navbar';
 import Landing from './src/screens/landing';
 import Login from './src/screens/login';
 import Register from './src/screens/register';
+import Profile from './src/screens/profile';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +30,7 @@ export default function App() {
 					<Stack.Screen name="landing" component={Landing} />
 					<Stack.Screen name="login" component={Login} />
 					<Stack.Screen name="register" component={Register} />
+					<Stack.Screen name="profile" component={Profile} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</PaperProvider >

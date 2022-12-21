@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Text, Surface, TextInput, Button } from 'react-native-paper'
 import Base from '../layouts/base'
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import app from '../../firebase'
 
 function Register() {
     const [email, setEmail] = useState('')
@@ -9,10 +11,31 @@ function Register() {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
 
+    const auth = getAuth(app)
+
+    const handleRegister = () => {
+        if (password !== confirmPassword) {
+            setError('Passwords do not match')
+            return
+        }
+
+        setLoading(true)
+
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(() => {
+                setError('')
+                setLoading(false)
+            })
+            .catch(error => {
+                setError(error.message)
+                setLoading(false)
+            })
+    }
+
     return (
         <Base>
             {/* Register form */}
-            <Surface style={{ padding: 20 }}>
+            <Surface style={{ padding: 20, margin: 20 }}>
                 <Text style={{ fontSize: 20, marginBottom: 20 }}>Register</Text>
                 <TextInput
                     label="Email"
@@ -40,7 +63,7 @@ function Register() {
 
                 <Button
                     mode="contained"
-                    onPress={() => console.log('Register')}
+                    onPress={() => handleRegister()}
                     style={{ marginBottom: 10 }}
                     loading={loading}
                 >
