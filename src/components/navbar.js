@@ -5,28 +5,19 @@ import app from '../../firebase'
 
 function Navbar({ navigation }) {
     const [user, setUser] = useState(null)
+    const auth = getAuth(app)
 
     const routes = navigation.getState().routes
-    const currRoute = routes[routes.length - 1]
     const prevRoute = routes[routes.length - 2]
-
-    const auth = getAuth(app)
 
     function handleLogout() {
         auth.signOut()
-            .then(() => {
-                navigation.navigate('login')
-            }
-            )
     }
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user)
-                if (currRoute.name === 'login' || currRoute.name === 'register') {
-                    navigation.navigate('profile')
-                }
             } else {
                 setUser(null)
             }
