@@ -1,32 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, Text, View } from 'react-native';
+import { useColorScheme } from 'react-native';
 
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import landing from './src/screens/landing';
-import login from './src/screens/login';
-import register from './src/screens/register';
+import { Provider as PaperProvider, MD3DarkTheme, MD3LightTheme } from 'react-native-paper';
+
+import Navbar from './src/components/navbar';
+import Landing from './src/screens/landing';
+import Login from './src/screens/login';
+import Register from './src/screens/register';
 
 const Stack = createStackNavigator();
 
 export default function App() {
+	const scheme = useColorScheme();
+
+	const theme = scheme === 'light' ? MD3LightTheme : MD3DarkTheme;
+
 	return (
-		<NavigationContainer>
-			<Stack.Navigator initialRouteName="landing">
-				<Stack.Screen name="landing" component={landing} />
-				<Stack.Screen name="login" component={login} />
-				<Stack.Screen name="register" component={register} />
-			</Stack.Navigator>
-		</NavigationContainer>
+		<PaperProvider theme={theme}>
+			<NavigationContainer theme={theme}>
+				<Stack.Navigator
+					initialRouteName="landing"
+					screenOptions={{
+						header: (props) => <Navbar {...props} />,
+					}}
+				>
+					<Stack.Screen name="landing" component={Landing} />
+					<Stack.Screen name="login" component={Login} />
+					<Stack.Screen name="register" component={Register} />
+				</Stack.Navigator>
+			</NavigationContainer>
+		</PaperProvider >
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-});
